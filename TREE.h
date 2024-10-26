@@ -33,10 +33,11 @@ public:
 
     void print()
     {
-        cout << "Item ID    :  " << item_id << endl;
-        cout << "Item Name  :  " << item_name << endl;
-        cout << "Quantity   :  " << quantity << endl;
-        cout << "Price      :  " << price << endl;
+        cout << "Item ID            :  " << item_id << endl;
+        cout << "Item Name          :  " << item_name << endl;
+        cout << "Item Description   :  " << item_description << endl;
+        cout << "Quantity           :  " << quantity << endl;
+        cout << "Price              :  " << price << endl;
     }
 };
 
@@ -201,6 +202,47 @@ public:
             nod->data.print();    
             cout << "\n---------------------------------------\n\n";
         }       
+    }
+
+    ////////////////////////////////////////////////////////////////
+    // --------------      Task 2      ---------------------------//
+    ////////////////////////////////////////////////////////////////
+
+    void CheckStockAvailability(int id)
+    {
+        node* temp = search(id);
+
+        // if available
+        if (temp)
+        {
+            cout << "Quantity of " << temp->data.item_name << " is " << temp->data.quantity << endl;
+        }
+    }
+
+    void lowStockAlert(int threshold, node* nod)
+    {
+        // using inOrder
+        if (nod)
+        {
+            lowStockAlert(threshold, nod->left);
+            if (nod->data.quantity < threshold)
+            {
+                cout << "\n---------------------------------------\n\n";
+                nod->data.print();
+            }
+            lowStockAlert(threshold ,nod->right);
+        }
+    }
+
+    void restockItem(int id, int qty)
+    {
+        node* temp = search(id);
+
+        // if available
+        if (temp)
+        {
+            temp->data.quantity += qty;
+        }
     }
 
 };
