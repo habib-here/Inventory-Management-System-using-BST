@@ -1,5 +1,17 @@
 #include "TREE.h"
 
+void print2DNode(node** nodess, int total)
+{
+    cout << "\n---------------------------------------\n\n";
+ 
+    for(int i = 0; i < total; i++)
+    {
+        
+        nodess[i]->data.print();
+        cout << "\n---------------------------------------\n\n";
+    }
+}
+
 int main(void)
 {
     tree t1;
@@ -17,6 +29,15 @@ int main(void)
     t1.restockItem(3, 5);
     t1.lowStockAlert(51, t1.root);
 
+    cout << "_________________________________________" << endl;
+    cout << "_________________________________________" << endl;
+    cout << "_________________________________________" << endl;
+    cout << "_________________________________________" << endl;
+
+    int total_idx;
+    node** inRange = t1.findInPrice(349,401, total_idx, t1.root);
+    print2DNode(inRange, total_idx);
+    delete[] inRange;
     //t1.inOrder(t1.root);
 
     return 0;

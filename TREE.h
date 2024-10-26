@@ -151,6 +151,7 @@ public:
                 return temp;
             }
         }
+    return 0;
     }
 
     void updateQuantity(int item_id, int qty)
@@ -246,8 +247,50 @@ public:
     }
 
     ////////////////////////////////////////////////////////////////
-    // --------------      Task 2      ---------------------------//
+    // --------------      Task 3      ---------------------------//
     ////////////////////////////////////////////////////////////////
+    
+    void findNumRange(int min_price, int max_price, int& num, node* nod)
+    {
+        if (nod)
+        {
+            if ((nod->data.price < max_price) && (nod->data.price > min_price))
+            {
+                num++;
+            }
+            findNumRange(min_price, max_price, num, nod->left);
+            findNumRange(min_price, max_price, num, nod->right);
+        }
+    }
+
+    void findNodesRange(int min_price, int max_price, node**& nodess, int idx, node* nod)
+    {
+        if (nod)
+        {
+            if ((nod->data.price < max_price) && (nod->data.price > min_price))
+            {
+                *(nodess + idx) = nod;
+                idx++;
+            }
+            findNodesRange(min_price, max_price, nodess, idx, nod->left);
+            findNodesRange(min_price, max_price, nodess, idx, nod->right);
+        }     
+    }
+
+    node** findInPrice(int min_price, int max_price, int&idx, node* nod)
+    {
+        // Calculated how many are present for DMA
+        idx = 0;
+        findNumRange(349, 401, idx, this->root);
+
+        // DMA to store nodes within min_price and max_price
+        node** nodess = new node*[idx];
+        findNodesRange(min_price, max_price, nodess, 0, nod);
+
+        // Now let retun
+        return nodess;
+    }
+
 
 };
 
