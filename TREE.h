@@ -117,6 +117,59 @@ public:
         }
     }
 
+    node* search (int id)
+    {
+        node* temp = root;  // keep track of root
+
+        while (temp)
+        {
+            if (temp->data.item_id < id)
+            {
+                if (temp -> right)
+                    temp = temp -> right;
+                else
+                {
+                    cout << "Item Not found" << endl;
+                    return 0;
+                }
+            }
+
+            else if (temp->data.item_id > id)
+            {
+                if (temp -> left)
+                    temp = temp -> left;
+                else
+                {
+                    cout << "Item Not found" << endl;
+                    return 0;
+                }
+            }
+
+            else
+            {
+                return temp;
+            }
+        }
+    }
+
+    void updateQuantity(int item_id, int qty)
+    {
+        node* temp = search(item_id);   // retrive node for crossponding item_id...
+
+        //  if node exists, then update quantity
+        if (temp)
+            temp->data.quantity = qty;
+    }
+
+    void updatePrice(int item_id, float price)
+    {
+        node* temp = search(item_id);   // retrive node for crossponding item_id...
+        
+        //  if node exists, then update price
+        if (temp)
+            temp->data.price = price;
+    }
+
     void inOrder(node* nod)
     {
         if (nod)
