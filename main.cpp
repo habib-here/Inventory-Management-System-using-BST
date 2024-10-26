@@ -1,11 +1,11 @@
-# include<iostream>
-using namespace std;
+#include "TREE.h"
 
 int main(void)
 {
- cout << "Working !!!\n";
- cout << "Its now more funny\n";
- cout << "check this out";
+    cout << "Working" << endl;
+    node* nodeee = new node();
+    nodeee->data.print();
 
- return 0;   
+    cout << "Can compile atlast\n";
+    return 0;
 }
