@@ -2,10 +2,14 @@
 
 int main(void)
 {
-    cout << "Working" << endl;
-    node* nodeee = new node();
-    nodeee->data.print();
+    tree t1;
 
-    cout << "Can compile atlast\n";
+    inventory item;
+
+    t1.insert(item);
+    t1.insert(2, "cable", "HDMI", 50, 400);
+    t1.insert(2, "cable", "HDMI", 50, 400);
+    t1.inOrder(t1.root);
+
     return 0;
 }
