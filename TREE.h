@@ -291,6 +291,31 @@ public:
         return nodess;
     }
 
+    void isCheapest(node*& min, node* nod)
+    {
+        if (nod)
+        {
+            if (min->data.price > nod->data.price)
+            {
+                min = nod;
+            }
+            isCheapest(min, nod->left);
+            isCheapest(min, nod->right);
+        }
+    }
+
+    void isMostExpensive(node*& max, node* nod)
+    {
+        if (nod)
+        {
+            if (max->data.price < nod->data.price)
+            {
+                max = nod;
+            }
+            isMostExpensive(max, nod->left);
+            isMostExpensive(max, nod->right);
+        }
+    }
 
 };
 

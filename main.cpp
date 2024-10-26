@@ -38,6 +38,22 @@ int main(void)
     node** inRange = t1.findInPrice(349,401, total_idx, t1.root);
     print2DNode(inRange, total_idx);
     delete[] inRange;
+
+    cout << "_________________________________________" << endl;
+    cout << "_________________________________________" << endl;
+    cout << "_________________________________________" << endl;
+    cout << "_________________________________________" << endl;
+
+    cout << "______________Cheapest___________________" << endl;
+    node* cheapest = t1.root;
+    t1.isCheapest(cheapest, t1.root);
+    cheapest->data.print();
+
+    cout << "______________Expensive___________________" << endl;
+    node* mostExpensive = t1.root;
+    t1.isMostExpensive(mostExpensive, t1.root);
+    mostExpensive->data.print();
+
     //t1.inOrder(t1.root);
 
     return 0;
