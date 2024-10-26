@@ -76,13 +76,19 @@ public:
         node* newNode = new node();
         newNode->data = d;
 
+        // inserting in tree
+        insert(newNode);
+    }
+
+    void insert(node* newNode)
+    {
         node* temp = root;  // root track
 
         if (root)
         {
             while (temp)
             {          
-                if (temp->data.item_id > d.item_id)
+                if (temp->data.item_id > newNode->data.item_id)
                 {
                     if (temp -> left)
                         temp = temp->left;
@@ -93,7 +99,7 @@ public:
                     }
                 }
 
-                else if (temp->data.item_id  < d.item_id)
+                else if (temp->data.item_id  < newNode->data.item_id)
                 {
                     if (temp->right)
                         temp = temp -> right;
@@ -291,6 +297,33 @@ public:
         return nodess;
     }
 
+    void findInPrice(int min_price, int max_price, tree& InRange, node* nod)
+    {
+        if (nod)
+        {
+            if ((nod->data.price < max_price) && (nod->data.price > min_price))
+            {
+                // Avoid shallow copying
+                node* newNode = new node();
+                newNode->data = nod->data;
+
+                // Now inserting
+                InRange.insert(newNode);
+            }
+            findInPrice(min_price, max_price, InRange, nod->left);
+            findInPrice(min_price, max_price, InRange, nod->right);
+        }            
+    }
+
+/*
+    tree findInPrice(int min_price, int max_price)
+    {
+        tree InRange;
+        addInRange(min_price, max_price, InRange, InRange.root);
+        return InRange;
+    }
+*/
+
     void isCheapest(node*& min, node* nod)
     {
         if (nod)
@@ -316,6 +349,12 @@ public:
             isMostExpensive(max, nod->right);
         }
     }
+
+    ////////////////////////////////////////////////////////////////
+    // --------------      Task 4      ---------------------------//
+    ////////////////////////////////////////////////////////////////
+
+
 
 };
 

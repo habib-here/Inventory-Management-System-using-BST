@@ -34,10 +34,16 @@ int main(void)
     cout << "_________________________________________" << endl;
     cout << "_________________________________________" << endl;
 
+/*
     int total_idx;
     node** inRange = t1.findInPrice(349,401, total_idx, t1.root);
     print2DNode(inRange, total_idx);
     delete[] inRange;
+*/
+    tree InRange;
+    t1.findInPrice(349, 401, InRange, t1.root);
+    InRange.inOrder(InRange.root);
+
 
     cout << "_________________________________________" << endl;
     cout << "_________________________________________" << endl;
