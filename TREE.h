@@ -4,6 +4,12 @@
 #include <iostream>
 using namespace std;
 
+#include <fstream>
+#include <sstream>
+#include <string>
+class tree;
+void bulkInsert(string, tree&);
+
 class inventory
 {
 public:
@@ -33,11 +39,11 @@ public:
 
     void print()
     {
-        cout << "Item ID            :  " << item_id << endl;
-        cout << "Item Name          :  " << item_name << endl;
-        cout << "Item Description   :  " << item_description << endl;
-        cout << "Quantity           :  " << quantity << endl;
-        cout << "Price              :  " << price << endl;
+        cout << "Item ID       :  " << item_id << endl;
+        cout << "Item Name     :  " << item_name << endl;
+        cout << "Description   :  " << item_description << endl;
+        cout << "Quantity      :  " << quantity << endl;
+        cout << "Price         :  " << price << endl;
     }
 };
 
@@ -56,12 +62,24 @@ public:
 
 class tree
 {
+
 public:
     node* root;
 
     tree()
     {
         root = 0;
+    }
+
+    tree(string file)
+    {
+        root = 0;
+        bulkInsert(file, *this);
+    }
+
+    void bulkInsertUpdate(string file)
+    {
+        bulkInsert(file, *this);
     }
 
     void insert(int id, string name, string des, int qty, float price)
@@ -114,6 +132,72 @@ public:
                 {
                     delete newNode;
                     cout << "Cannot add inventory with same id !!!" << endl;
+                    return;
+                }
+            }
+            }
+        else
+        {
+            root = newNode;
+        }
+    }
+
+
+    void insertUpdate(int id, string name, string des, int qty, float price)
+    {
+        inventory d(id, name, des, qty, price);
+        insertUpdate(d);
+    }
+
+    void insertUpdate(inventory d)
+    {
+        // new Node which will be inserted
+        node* newNode = new node();
+        newNode->data = d;
+
+        // inserting in tree
+        insertUpdate(newNode);
+    }
+
+    void insertUpdate(node* newNode)
+    {
+        node* temp = root;  // root track
+
+        if (root)
+        {
+            while (temp)
+            {          
+                if (temp->data.item_id > newNode->data.item_id)
+                {
+                    if (temp -> left)
+                        temp = temp->left;
+                    else
+                    {
+                        temp -> left = newNode;
+                        return;
+                    }
+                }
+
+                else if (temp->data.item_id  < newNode->data.item_id)
+                {
+                    if (temp->right)
+                        temp = temp -> right;
+                    else
+                    {
+                        temp -> right = newNode;
+                        return;
+                    }
+                }
+
+                else    // same id
+                {
+                    // Updating quantity
+                    temp ->data.quantity = newNode->data.quantity;
+                    
+                    // Updating price
+                    temp->data.price = newNode->data.price;
+                    
+                    cout << "Found item with same id. Updated quantity and Price" << endl;
                     return;
                 }
             }
@@ -349,13 +433,65 @@ public:
             isMostExpensive(max, nod->right);
         }
     }
+};
 
     ////////////////////////////////////////////////////////////////
     // --------------      Task 4      ---------------------------//
     ////////////////////////////////////////////////////////////////
+    void bulkInsert(string fileName, tree& t1)
+    {
+        // f"{item_id},{item_description},{quantity},{price}
+        // Define variables to store data as per the format: {int}, {string}, {int}, {float}
+        int item_id;
+        string item_name, item_description;
+        int quantity;
+        float price;
 
+        // Open file stream
+        ifstream file(fileName);
+        if (!file.is_open()) {
+            cerr << "Error opening file!" << endl;
+            return;
+        }
 
+        string line;
+        while (getline(file, line)) {
+            // Create a string stream from the line
+            stringstream ss(line);
 
-};
+            // Read and parse each value based on the format
+            char delimiter;
+            ss >> item_id >> delimiter;
+            getline(ss, item_name, ',');
+            getline(ss, item_description, ',');
+            ss >> quantity >> delimiter >> price;
+
+            // // Output the data (for testing)
+            // cout << "Item ID: " << item_id << endl;
+            // cout << "item_name: " << item_name << endl;
+            // cout << "Description: " << item_description << endl;
+            // cout << "Quantity: " << quantity << endl;
+            // cout << "Price: " << price << endl << endl;
+
+            // Insert to Tree
+            t1.insertUpdate(item_id, item_name, item_description, quantity, price);
+        }
+
+        // Close file stream
+        file.close();
+        return;
+    }
+
+    void print2DNode(node** nodess, int total)
+    {
+        cout << "\n---------------------------------------\n\n";
+    
+        for(int i = 0; i < total; i++)
+        {
+            
+            nodess[i]->data.print();
+            cout << "\n---------------------------------------\n\n";
+        }
+    }
 
 #endif

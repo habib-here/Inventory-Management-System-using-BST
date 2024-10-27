@@ -1,17 +1,5 @@
 #include "TREE.h"
 
-void print2DNode(node** nodess, int total)
-{
-    cout << "\n---------------------------------------\n\n";
- 
-    for(int i = 0; i < total; i++)
-    {
-        
-        nodess[i]->data.print();
-        cout << "\n---------------------------------------\n\n";
-    }
-}
-
 int main(void)
 {
     tree t1;
@@ -60,7 +48,11 @@ int main(void)
     t1.isMostExpensive(mostExpensive, t1.root);
     mostExpensive->data.print();
 
-    //t1.inOrder(t1.root);
+    cout << "_____________Bulk Update___________________" << endl;
+    tree t2("test.csv");
+    //t1.bulkInsertUpdate("test.csv");
+    //bulkInsert("test.csv", t1);
+    t2.inOrder(t2.root);
 
     return 0;
 }
