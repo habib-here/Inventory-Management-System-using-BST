@@ -21,6 +21,7 @@ int main() {
         cout << "8. Find Cheapest Item\n";
         cout << "9. Find Most Expensive Item\n";
         cout << "10. Bulk Insert/Update from CSV\n";
+        cout << "11. Print Tree\n";
         cout << "0. Exit\n";
         cout << "Enter your choice: ";
         cin >> choice;
@@ -28,10 +29,24 @@ int main() {
         switch (choice) {
             case 1: {
                 int id, quantity, price;
-                string type, name;
-                cout << "Enter item ID, type, name, quantity, and price: ";
-                cin >> id >> type >> name >> quantity >> price;
-                t1.insert(id, type, name, quantity, price);
+                string name, des;
+
+                cout << "Enter item ID: ";
+                cin >> id;
+
+                cout << "Enter item name: ";
+                getline(cin, name);
+
+                cout << "Enter description: ";
+                getline(cin, des);
+
+                cout << "Enter quantity: ";
+                cin >> quantity;
+
+                cout << "Enter price: ";;
+                cin >> price;
+
+                t1.insert(id, name, des, quantity, price);
                 break;
             }
             case 2: {
@@ -95,6 +110,34 @@ int main() {
                 cout << "Enter CSV filename: ";
                 cin >> filename;
                 t1.bulkInsertUpdate(filename);
+                break;
+            }
+            case 11: { // Print Tree
+                int printChoice;
+                cout << "\nChoose Print Order:\n";
+                cout << "1. In-Order\n";
+                cout << "2. Pre-Order\n";
+                cout << "3. Post-Order\n";
+                cout << "Enter your choice: ";
+                cin >> printChoice;
+
+                switch (printChoice) {
+                    case 1:
+                        cout << "In-Order Traversal:\n";
+                        t1.inOrder(t1.root);
+                        break;
+                    case 2:
+                        cout << "Pre-Order Traversal:\n";
+                        t1.preOrder(t1.root);
+                        break;
+                    case 3:
+                        cout << "Post-Order Traversal:\n";
+                        t1.postOrder(t1.root);
+                        break;
+                    default:
+                        cout << "Invalid print choice!\n";
+                        break;
+                }
                 break;
             }
             case 0: {

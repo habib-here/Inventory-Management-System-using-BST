@@ -1,14 +1,25 @@
 #ifndef TREE_H
 #define TREE_H
 
+#include <string>
+#include <iomanip>
+#include <fstream>
+#include <sstream>
 #include <iostream>
 using namespace std;
 
-#include <fstream>
-#include <sstream>
-#include <string>
+// Forward declerations
 class tree;
 void bulkInsert(string, tree&);
+
+// ANSI color codes
+const string RESET = "\033[0m"; // Reset to default
+const string RED = "\033[31m";
+const string GREEN = "\033[32m";
+const string YELLOW = "\033[33m";
+const string BLUE = "\033[34m";
+const string MAGENTA = "\033[35m";
+const string CYAN = "\033[36m";
 
 class inventory
 {
@@ -39,11 +50,15 @@ public:
 
     void print()
     {
-        cout << "Item ID       :  " << item_id << endl;
-        cout << "Item Name     :  " << item_name << endl;
-        cout << "Description   :  " << item_description << endl;
-        cout << "Quantity      :  " << quantity << endl;
-        cout << "Price         :  " << price << endl;
+        cout << "=============================================\n";
+        cout << "|            Inventory Item Details         |\n";
+        cout << "=============================================\n";
+        cout << "| Item ID       :  " << setw(20) << left << item_id << "|\n";
+        cout << "| Item Name     :  " << setw(20) << left << item_name << "|\n";
+        cout << "| Description   :  " << setw(20) << left << item_description << "|\n";
+        cout << "| Quantity      :  " << setw(20) << left << quantity << "|\n";
+        cout << "| Price         :  " << setw(20) << left << price << "|\n";
+        cout << "=============================================\n";
     }
 };
 
@@ -264,21 +279,47 @@ public:
 
     void inOrder(node* nod)
     {
-        if (nod)
-        {
-            inOrder(nod->left);
-            cout << "\n---------------------------------------\n\n";
-            nod->data.print();
-            inOrder(nod->right);
+        if (nod == nullptr) {
+            return;
         }
+
+        // Print header only once, at the beginning
+        static bool isHeaderPrinted = false;
+        if (!isHeaderPrinted) {
+            cout << "====================================================================================\n";
+            cout << "|   Item ID  |    Item Name    |       Description        |  Quantity  |   Price   |\n";
+            cout << "====================================================================================\n";
+            isHeaderPrinted = true;
+        }
+
+        // Recursive call to left child
+        inOrder(nod->left);
+
+        // Print current node's data in table format with colors
+        cout << "| " << RED << setw(10) << left << nod->data.item_id 
+            << RESET << " | " 
+            << GREEN << setw(15) << left << nod->data.item_name 
+            << RESET << " | " 
+            << YELLOW << setw(24) << left << nod->data.item_description 
+            << RESET << " | " 
+            << BLUE << setw(10) << left << nod->data.quantity 
+            << RESET << " | " 
+            << MAGENTA << setw(9) << left << nod->data.price 
+            << RESET << " |\n";
+
+        // Aligning the separator line
+        cout << "------------------------------------------------------------------------------------\n";
+
+        // Recursive call to right child
+        inOrder(nod->right);
     }
+
 
     void preOrder(node* nod)
     {
         if (nod)
         {
             nod->data.print();
-            cout << "\n---------------------------------------\n\n";
             preOrder(nod->left);
             preOrder(nod->right);
         }
@@ -290,8 +331,7 @@ public:
         {
             postOrder(nod->left);
             postOrder(nod->right);
-            nod->data.print();    
-            cout << "\n---------------------------------------\n\n";
+            nod->data.print();
         }       
     }
 
@@ -318,7 +358,6 @@ public:
             lowStockAlert(threshold, nod->left);
             if (nod->data.quantity < threshold)
             {
-                cout << "\n---------------------------------------\n\n";
                 nod->data.print();
             }
             lowStockAlert(threshold ,nod->right);
@@ -483,14 +522,10 @@ public:
     }
 
     void print2DNode(node** nodess, int total)
-    {
-        cout << "\n---------------------------------------\n\n";
-    
+    {    
         for(int i = 0; i < total; i++)
-        {
-            
+        {            
             nodess[i]->data.print();
-            cout << "\n---------------------------------------\n\n";
         }
     }
 
