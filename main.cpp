@@ -1,58 +1,112 @@
-#include "TREE.h"
+#include <iostream>
+#include <string>
+#include "tree.h"  // Assuming you have the necessary tree class header
 
-int main(void)
-{
+using namespace std;
+
+int main() {
     tree t1;
+    int choice;
+    bool running = true;
 
-    inventory item;
+    while (running) {
+        cout << "\nInventory Management System\n";
+        cout << "1. Insert Item\n";
+        cout << "2. Check Stock Availability\n";
+        cout << "3. Update Price\n";
+        cout << "4. Update Quantity\n";
+        cout << "5. Low Stock Alert\n";
+        cout << "6. Restock Item\n";
+        cout << "7. Find Items in Price Range\n";
+        cout << "8. Find Cheapest Item\n";
+        cout << "9. Find Most Expensive Item\n";
+        cout << "10. Bulk Insert/Update from CSV\n";
+        cout << "0. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
 
-    t1.insert(item);
-    t1.insert(2, "cable", "HDMI", 50, 400);
-    t1.insert(3, "cable", "Type-C", 50, 400);
-    t1.CheckStockAvailability(t1.root->right->data.item_id);
-    t1.updatePrice(2, 350);
-    t1.updateQuantity(2, 100);
-    t1.lowStockAlert(51, t1.root);
-    cout << "_________________________________________" << endl;
-    t1.restockItem(3, 5);
-    t1.lowStockAlert(51, t1.root);
+        switch (choice) {
+            case 1: {
+                int id, quantity, price;
+                string type, name;
+                cout << "Enter item ID, type, name, quantity, and price: ";
+                cin >> id >> type >> name >> quantity >> price;
+                t1.insert(id, type, name, quantity, price);
+                break;
+            }
+            case 2: {
+                int id;
+                cout << "Enter item ID to check stock availability: ";
+                cin >> id;
+                t1.CheckStockAvailability(id);
+                break;
+            }
+            case 3: {
+                int id, newPrice;
+                cout << "Enter item ID and new price: ";
+                cin >> id >> newPrice;
+                t1.updatePrice(id, newPrice);
+                break;
+            }
+            case 4: {
+                int id, newQuantity;
+                cout << "Enter item ID and new quantity: ";
+                cin >> id >> newQuantity;
+                t1.updateQuantity(id, newQuantity);
+                break;
+            }
+            case 5: {
+                int threshold;
+                cout << "Enter quantity threshold for low stock alert: ";
+                cin >> threshold;
+                t1.lowStockAlert(threshold, t1.root);
+                break;
+            }
+            case 6: {
+                int id, quantity;
+                cout << "Enter item ID and quantity to restock: ";
+                cin >> id >> quantity;
+                t1.restockItem(id, quantity);
+                break;
+            }
+            case 7: {
+                int minPrice, maxPrice;
+                tree InRange;
+                cout << "Enter minimum and maximum price range: ";
+                cin >> minPrice >> maxPrice;
+                t1.findInPrice(minPrice, maxPrice, InRange, t1.root);
+                InRange.inOrder(InRange.root);
+                break;
+            }
+            case 8: {
+                node* cheapest = t1.root;
+                t1.isCheapest(cheapest, t1.root);
+                cheapest->data.print();
+                break;
+            }
+            case 9: {
+                node* mostExpensive = t1.root;
+                t1.isMostExpensive(mostExpensive, t1.root);
+                mostExpensive->data.print();
+                break;
+            }
+            case 10: {
+                string filename;
+                cout << "Enter CSV filename: ";
+                cin >> filename;
+                t1.bulkInsertUpdate(filename);
+                break;
+            }
+            case 0: {
+                running = false;
+                break;
+            }
+            default:
+                cout << "Invalid choice! Please try again.\n";
+                break;
+        }
+    }
 
-    cout << "_________________________________________" << endl;
-    cout << "_________________________________________" << endl;
-    cout << "_________________________________________" << endl;
-    cout << "_________________________________________" << endl;
-
-/*
-    int total_idx;
-    node** inRange = t1.findInPrice(349,401, total_idx, t1.root);
-    print2DNode(inRange, total_idx);
-    delete[] inRange;
-*/
-    tree InRange;
-    t1.findInPrice(349, 401, InRange, t1.root);
-    InRange.inOrder(InRange.root);
-
-
-    cout << "_________________________________________" << endl;
-    cout << "_________________________________________" << endl;
-    cout << "_________________________________________" << endl;
-    cout << "_________________________________________" << endl;
-
-    cout << "______________Cheapest___________________" << endl;
-    node* cheapest = t1.root;
-    t1.isCheapest(cheapest, t1.root);
-    cheapest->data.print();
-
-    cout << "______________Expensive___________________" << endl;
-    node* mostExpensive = t1.root;
-    t1.isMostExpensive(mostExpensive, t1.root);
-    mostExpensive->data.print();
-
-    cout << "_____________Bulk Update___________________" << endl;
-    tree t2("test.csv");
-    //t1.bulkInsertUpdate("test.csv");
-    //bulkInsert("test.csv", t1);
-    t2.inOrder(t2.root);
-
+    cout << "Exiting Inventory Management System.\n";
     return 0;
 }
