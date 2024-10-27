@@ -1,10 +1,7 @@
-#include <iostream>
-#include <string>
 #include "tree.h"  // Assuming you have the necessary tree class header
 
-using namespace std;
-
-int main() {
+int main() 
+{
     tree t1;
     int choice;
     bool running = true;
@@ -28,7 +25,8 @@ int main() {
 
         switch (choice) {
             case 1: {
-                int id, quantity, price;
+                int id, quantity;
+                float price;
                 string name, des;
 
                 cout << "Enter item ID: ";
@@ -57,7 +55,8 @@ int main() {
                 break;
             }
             case 3: {
-                int id, newPrice;
+                int id;
+                float newPrice;
                 cout << "Enter item ID and new price: ";
                 cin >> id >> newPrice;
                 t1.updatePrice(id, newPrice);

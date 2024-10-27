@@ -2,15 +2,11 @@
 #define TREE_H
 
 #include <string>
-#include <iomanip>
 #include <fstream>
 #include <sstream>
+#include <iomanip>
 #include <iostream>
 using namespace std;
-
-// Forward declerations
-class tree;
-void bulkInsert(string, tree&);
 
 // ANSI color codes
 const string RESET = "\033[0m"; // Reset to default
@@ -20,6 +16,10 @@ const string YELLOW = "\033[33m";
 const string BLUE = "\033[34m";
 const string MAGENTA = "\033[35m";
 const string CYAN = "\033[36m";
+
+// Forward declerations
+class tree;
+void bulkInsert(string, tree&);
 
 class inventory
 {
@@ -48,18 +48,18 @@ public:
         this->price = price;
     }
 
-    void print()
-    {
-        cout << "=============================================\n";
-        cout << "|            Inventory Item Details         |\n";
-        cout << "=============================================\n";
-        cout << "| Item ID       :  " << setw(20) << left << item_id << "|\n";
-        cout << "| Item Name     :  " << setw(20) << left << item_name << "|\n";
-        cout << "| Description   :  " << setw(20) << left << item_description << "|\n";
-        cout << "| Quantity      :  " << setw(20) << left << quantity << "|\n";
-        cout << "| Price         :  " << setw(20) << left << price << "|\n";
-        cout << "=============================================\n";
-    }
+void print() {
+    cout << "=============================================\n";
+    cout << "|            Inventory Item Details         |\n";
+    cout << "=============================================\n";
+    cout << "| Item ID       :  " << RED << setw(24) << left << item_id << RESET << " |\n";
+    cout << "| Item Name     :  " << GREEN << setw(24) << left << item_name << RESET << " |\n";
+    cout << "| Description   :  " << YELLOW << setw(24) << left << item_description << RESET << " |\n";
+    cout << "| Quantity      :  " << BLUE << setw(24) << left << quantity << RESET << " |\n";
+    cout << "| Price         :  " << MAGENTA << setw(24) << left << price << RESET << " |\n";
+    cout << "=============================================\n";
+}
+
 };
 
 class node
@@ -277,24 +277,8 @@ public:
             temp->data.price = price;
     }
 
-    void inOrder(node* nod)
+    void print(node* nod)
     {
-        if (nod == nullptr) {
-            return;
-        }
-
-        // Print header only once, at the beginning
-        static bool isHeaderPrinted = false;
-        if (!isHeaderPrinted) {
-            cout << "====================================================================================\n";
-            cout << "|   Item ID  |    Item Name    |       Description        |  Quantity  |   Price   |\n";
-            cout << "====================================================================================\n";
-            isHeaderPrinted = true;
-        }
-
-        // Recursive call to left child
-        inOrder(nod->left);
-
         // Print current node's data in table format with colors
         cout << "| " << RED << setw(10) << left << nod->data.item_id 
             << RESET << " | " 
@@ -310,8 +294,35 @@ public:
         // Aligning the separator line
         cout << "------------------------------------------------------------------------------------\n";
 
-        // Recursive call to right child
-        inOrder(nod->right);
+    }
+
+    void printHeader(node* nod)
+    {
+        // // Print only once, at the beginning
+        // static bool isHeaderPrinted = false;
+        // if (!isHeaderPrinted) {
+        //     cout << "====================================================================================\n";
+        //     cout << "|   Item ID  |    Item Name    |       Description        |  Quantity  |   Price   |\n";
+        //     cout << "====================================================================================\n";
+        //     isHeaderPrinted = true;
+        // }
+        // Print only once, at the beginning
+        if (nod == root) {
+            cout << "====================================================================================\n";
+            cout << "|   Item ID  |    Item Name    |       Description        |  Quantity  |   Price   |\n";
+            cout << "====================================================================================\n";
+        }
+    }
+
+    void inOrder(node* nod)
+    {
+        if (nod) 
+        {
+            printHeader(nod);
+            inOrder(nod->left);
+            print(nod);
+            inOrder(nod->right);
+        }
     }
 
 
@@ -319,7 +330,8 @@ public:
     {
         if (nod)
         {
-            nod->data.print();
+            printHeader(nod);
+            print(nod);
             preOrder(nod->left);
             preOrder(nod->right);
         }
@@ -329,11 +341,13 @@ public:
     {
         if (nod)
         {
+            printHeader(nod);
             postOrder(nod->left);
             postOrder(nod->right);
-            nod->data.print();
+            print(nod);
         }       
     }
+
 
     ////////////////////////////////////////////////////////////////
     // --------------      Task 2      ---------------------------//
@@ -522,9 +536,9 @@ public:
     }
 
     void print2DNode(node** nodess, int total)
-    {    
-        for(int i = 0; i < total; i++)
-        {            
+    {
+        for (int i = 0; i < total; i++)
+        {
             nodess[i]->data.print();
         }
     }
