@@ -259,6 +259,47 @@ public:
     return 0;
     }
 
+    void deleteNode(node* nod)
+    {
+        if(nod)
+        {
+            node* temp = nod;
+            if (nod->left == NULL)
+            {
+                nod = nod -> right;
+            }
+
+            else if (nod->right == NULL)
+            {
+                nod = nod-> left;
+            }
+            else
+            {
+                /*
+                temp = nod -> right;            //going to right
+
+                while (temp -> left)            // most left
+                {
+                    temp = temp -> left;
+                }
+
+                temp -> left = nod -> left;     // left subtree becomes most left subtree of right
+                temp = nod;                     // both pointing back to node... to be deleted
+                nod = nod->right;               // now connecting parent with nodes right
+                */
+               temp = nod -> right;
+            
+                while (temp -> left)            // most left of right
+                    temp = temp -> left;
+
+                nod -> data = temp -> data;
+                
+            }
+            delete temp;
+            temp = NULL;
+        }
+    }
+
     void updateQuantity(int item_id, int qty)
     {
         node* temp = search(item_id);   // retrive node for crossponding item_id...

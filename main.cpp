@@ -8,17 +8,18 @@ int main()
 
     while (running) {
         cout << "\nInventory Management System\n";
-        cout << "1. Insert Item\n";
-        cout << "2. Check Stock Availability\n";
-        cout << "3. Update Price\n";
-        cout << "4. Update Quantity\n";
-        cout << "5. Low Stock Alert\n";
-        cout << "6. Restock Item\n";
-        cout << "7. Find Items in Price Range\n";
-        cout << "8. Find Cheapest Item\n";
-        cout << "9. Find Most Expensive Item\n";
+        cout << "01. Insert Item\n";
+        cout << "02. Check Stock Availability\n";
+        cout << "03. Update Price\n";
+        cout << "04. Update Quantity\n";
+        cout << "05. Low Stock Alert\n";
+        cout << "06. Restock Item\n";
+        cout << "07. Find Items in Price Range\n";
+        cout << "08. Find Cheapest Item\n";
+        cout << "09. Find Most Expensive Item\n";
         cout << "10. Bulk Insert/Update from CSV\n";
         cout << "11. Print Tree\n";
+        cout << "12. Delte Node\n";
         cout << "0. Exit\n";
         cout << "Enter your choice: ";
         cin >> choice;
@@ -31,6 +32,7 @@ int main()
 
                 cout << "Enter item ID: ";
                 cin >> id;
+                cin.ignore(10, '\n');
 
                 cout << "Enter item name: ";
                 getline(cin, name);
@@ -137,6 +139,13 @@ int main()
                         cout << "Invalid print choice!\n";
                         break;
                 }
+                break;
+            }
+            case 12:{
+                int id;
+                cout << "Enter id: ";
+                cin >> id;
+                t1.deleteNode(t1.search(id));
                 break;
             }
             case 0: {
