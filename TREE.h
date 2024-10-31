@@ -236,7 +236,7 @@ public:
                 else
                 {
                     cout << "Item Not found" << endl;
-                    return 0;
+                    return nullptr;
                 }
             }
 
@@ -259,46 +259,53 @@ public:
     return 0;
     }
 
-    void deleteNode(node* nod)
-    {
-        if(nod)
-        {
-            node* temp = nod;
-            if (nod->left == NULL)
-            {
-                nod = nod -> right;
-            }
+void deleteNode(int num, node *&nodePtr)
+{
 
-            else if (nod->right == NULL)
-            {
-                nod = nod-> left;
-            }
-            else
-            {
-                /*
-                temp = nod -> right;            //going to right
+if (nodePtr == NULL) // node does not exist in the tree
+cout << num <<" not found.\n";
 
-                while (temp -> left)            // most left
-                {
-                    temp = temp -> left;
-                }
+else if (num < nodePtr->data.item_id)
 
-                temp -> left = nod -> left;     // left subtree becomes most left subtree of right
-                temp = nod;                     // both pointing back to node... to be deleted
-                nod = nod->right;               // now connecting parent with nodes right
-                */
-               temp = nod -> right;
-            
-                while (temp -> left)            // most left of right
-                    temp = temp -> left;
+deleteNode(num, nodePtr->left); // find in left subtree
 
-                nod -> data = temp -> data;
-                
-            }
-            delete temp;
-            temp = NULL;
-        }
-    }
+else if (num > nodePtr->data.item_id)
+deleteNode(num, nodePtr->right); // find in right subtree
+
+else // num == nodePtr->value i.e. node is found
+makeDeletion(nodePtr); // actually deletes node from BST
+
+}
+
+void makeDeletion(node *&nodePtr) {
+node *tempNodePtr; // Temperary pointer
+
+if (nodePtr->right == NULL) { // case for leaf and one (left) child
+tempNodePtr = nodePtr;
+nodePtr = nodePtr->left; // Reattach the left child
+delete tempNodePtr;
+}
+
+else if (nodePtr->left == NULL) { // case for one (right) child
+tempNodePtr = nodePtr;
+nodePtr = nodePtr->right; // Reattach the right child
+delete tempNodePtr;
+}
+
+else { // case for two children.
+tempNodePtr = nodePtr->right; // Move one node to the right
+while (tempNodePtr->left) { // Go to the extreme left node
+tempNodePtr = tempNodePtr->left;
+
+}
+
+tempNodePtr->left = nodePtr->left; // Reattach the left subtree
+tempNodePtr = nodePtr;
+nodePtr = nodePtr->right; // Reattach the right subtree
+delete tempNodePtr;
+
+}
+}
 
     void updateQuantity(int item_id, int qty)
     {

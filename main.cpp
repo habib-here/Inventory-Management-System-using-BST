@@ -145,7 +145,7 @@ int main()
                 int id;
                 cout << "Enter id: ";
                 cin >> id;
-                t1.deleteNode(t1.search(id));
+                t1.deleteNode(id, t1.root);
                 break;
             }
             case 0: {
